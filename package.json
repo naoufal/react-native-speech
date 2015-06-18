@@ -1,0 +1,37 @@
+{
+  "name": "react-native-speech",
+  "version": "0.1.0",
+  "description": "A text-to-speech library for React Native.",
+  "main": "SpeechSynthesizer.ios.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naoufal/react-native-speech.git"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "native",
+    "siri",
+    "speech",
+    "speak",
+    "speech-to-text",
+    "react-component",
+    "react-native-component"
+  ],
+  "author": "Naoufal Kadhom <naoufalkadhom@gmail.com> (https://github.com/naoufal)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naoufal/react-native-speech/issues"
+  },
+  "homepage": "https://github.com/naoufal/react-native-speech",
+  "peerDependencies": {
+    "react-native": ">=0.4.0"
+  },
+  "jshintConfig": {
+    "esnext": true,
+    "node": true
+  }
+}
