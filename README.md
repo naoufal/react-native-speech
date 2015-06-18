@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/react-native-speech.svg?style=flat-square)](https://www.npmjs.com/package/react-native-speech)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-speech.svg?style=flat-square)](https://www.npmjs.com/package/react-native-speech)
-[![Code Climate](https://img.shields.io/codeclimate/github/naoufal/react-nativespeech.svg?style=flat-square)](https://codeclimate.com/github/naoufal/react-native-speech)
+[![Code Climate](https://img.shields.io/codeclimate/github/naoufal/react-native-speech.svg?style=flat-square)](https://codeclimate.com/github/naoufal/react-native-speech)
 
 __`react-native-speech`__ is a text-to-speech library for [React Native](https://facebook.github.io/react-native/).
 
