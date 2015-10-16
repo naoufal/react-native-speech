@@ -13,37 +13,39 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
     if (self.synthesizer) {
         return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
     }
-    
+
     // Set args to variables
     NSString *text = args[@"text"];
     NSString *voice = args[@"voice"];
-    
+    NSNumber *rate = args[@"rate"];
+
     // Error if no text is passed
     if (!text) {
         RCTLogError(@"[Speech] You must specify a text to speak.");
         return;
     }
-    
+
     // Set default voice
     NSString *voiceLanguage;
-    
+
     // Set voice if provided
     if (voice) {
         voiceLanguage = voice;
-        
+
     // Fallback to en-US
     } else {
         voiceLanguage = @"en-US";
     }
-    
+
     // Setup utterance and voice
     AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
-    
+
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:voiceLanguage];
-    
-    // SHOULD BE SET BY ARGUMENT
-    utterance.rate = 0.25;
-    
+
+    if (rate) {
+      utterance.rate = [rate doubleValue];
+    }
+
     self.synthesizer = [[AVSpeechSynthesizer alloc] init];
     self.synthesizer.delegate = self;
 
@@ -103,7 +105,7 @@ RCT_EXPORT_METHOD(speechVoices:(RCTResponseSenderBlock)callback)
 {
     NSArray *speechVoices = [AVSpeechSynthesisVoice speechVoices];
     NSArray *locales = [speechVoices valueForKey:@"language"];
-        
+
     callback(@[[NSNull null], locales]);
 }
 
