@@ -96,13 +96,14 @@ var YourComponent = React.createClass({
 Initializes the speech instance and speaks the utterance provided.
 
 __Arguments__
-- `utterance` - An `Object` containing the following keys: `text`, `voice`.
+- `utterance` - An `Object` containing the following keys: `text`, `voice` and, optionally, `rate`. `rate` is a float where lower numbers indicate slower speech.
 
 __Examples__
 ```js
 Speech.speak({
   text: 'I was runnin\' through the 6 with my woes',
-  voice: 'en-US'
+  voice: 'en-US',
+  rate: 0.4
 })
 .then(started => {
   // Success code
