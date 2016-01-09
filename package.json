@@ -1,6 +1,6 @@
 {
   "name": "react-native-speech",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A text-to-speech library for React Native.",
   "main": "SpeechSynthesizer.ios.js",
   "scripts": {
@@ -26,12 +26,5 @@
   "bugs": {
     "url": "https://github.com/naoufal/react-native-speech/issues"
   },
-  "homepage": "https://github.com/naoufal/react-native-speech",
-  "peerDependencies": {
-    "react-native": ">=0.4.0"
-  },
-  "jshintConfig": {
-    "esnext": true,
-    "node": true
-  }
+  "homepage": "https://github.com/naoufal/react-native-speech"
 }
