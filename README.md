@@ -1,10 +1,10 @@
-# react-native-speech
+# React Native Speech
 
 [![npm version](https://img.shields.io/npm/v/react-native-speech.svg?style=flat-square)](https://www.npmjs.com/package/react-native-speech)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-speech.svg?style=flat-square)](https://www.npmjs.com/package/react-native-speech)
 [![Code Climate](https://img.shields.io/codeclimate/github/naoufal/react-native-speech.svg?style=flat-square)](https://codeclimate.com/github/naoufal/react-native-speech)
 
-__`react-native-speech`__ is a text-to-speech library for [React Native](https://facebook.github.io/react-native/).
+React Native Speech is a text-to-speech library for [React Native](https://facebook.github.io/react-native/).
 
 ## Documentation
 - [Install](https://github.com/naoufal/react-native-speech#install)
@@ -178,7 +178,7 @@ Speech.supportedVoices()
 ```
 
 ## License
-Copyright (c) 2015, Naoufal Kadhom
+Copyright (c) 2015, [Naoufal Kadhom](http://naoufal.com)
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
