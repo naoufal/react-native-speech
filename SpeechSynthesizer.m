@@ -9,10 +9,6 @@ RCT_EXPORT_MODULE()
 // Speak
 RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
 {
-    // Error if self.synthesizer was already initialized
-    if (self.synthesizer) {
-        return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
-    }
 
     // Set args to variables
     NSString *text = args[@"text"];
