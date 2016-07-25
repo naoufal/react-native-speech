@@ -62,6 +62,21 @@ var SpeechSynthesizer = {
       });
     });
   },
+  
+  isStopped() {
+		return new Promise(function(resolve, reject) {
+			NativeSpeechSynthesizer.isStopped(function(error, finished) {
+				if (error) {
+					return reject(error);
+				}
+				if (finished === 1) {
+					resolve(true);
+				} else {
+					resolve(false);
+				}
+			});
+		});
+	},
 
   supportedVoices() {
     return new Promise(function(resolve, reject) {
