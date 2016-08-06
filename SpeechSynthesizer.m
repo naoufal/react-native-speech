@@ -146,6 +146,7 @@ RCT_EXPORT_METHOD(speechVoices:(RCTResponseSenderBlock)callback)
 -(void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didCancelSpeechUtterance:(AVSpeechUtterance *)utterance
 {
     NSLog(@"Speech cancelled");
+    self.synthesizer = nil;
 }
 
 @end
