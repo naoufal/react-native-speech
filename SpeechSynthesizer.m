@@ -11,7 +11,7 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
 {
     // Error if self.synthesizer was already initialized
     if (self.synthesizer) {
-        return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
+      RCTLogError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.");
     }
 
     // Set args to variables
@@ -37,8 +37,10 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
         voiceLanguage = @"en-US";
     }
 
-    // Setup utterance and voice
-    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
+    // Setup utterance and voice if no instance exists
+    if (self.synthesizer) {
+      AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
+    }
 
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:voiceLanguage];
 
@@ -84,9 +86,9 @@ RCT_EXPORT_METHOD(continueSpeakingAtBoundary)
 RCT_EXPORT_METHOD(paused:(RCTResponseSenderBlock)callback)
 {
     if (self.synthesizer.paused) {
-        callback(@[@true]);
+      callback(@[[NSNull null], @true]);
     } else {
-        callback(@[@false]);
+      callback(@[[NSNull null], @false]);
     }
 }
 
@@ -94,9 +96,9 @@ RCT_EXPORT_METHOD(paused:(RCTResponseSenderBlock)callback)
 RCT_EXPORT_METHOD(speaking:(RCTResponseSenderBlock)callback)
 {
     if (self.synthesizer.speaking) {
-        callback(@[@true]);
+      callback(@[[NSNull null], @true]);
     } else {
-        callback(@[@false]);
+      callback(@[[NSNull null], @false]);
     }
 }
 
