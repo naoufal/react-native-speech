@@ -38,18 +38,19 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
     }
 
     // Setup utterance and voice if no instance exists
-    if (self.synthesizer) {
-      AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
-    }
-
+    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
+    
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:voiceLanguage];
-
+    
     if (rate) {
-      utterance.rate = [rate doubleValue];
+        utterance.rate = [rate doubleValue];
     }
-
-    self.synthesizer = [[AVSpeechSynthesizer alloc] init];
-    self.synthesizer.delegate = self;
+    
+    if (!self.synthesizer) {
+        
+        self.synthesizer = [[AVSpeechSynthesizer alloc] init];
+        self.synthesizer.delegate = self;
+    }
 
     // Speak
     [self.synthesizer speakUtterance:utterance];
