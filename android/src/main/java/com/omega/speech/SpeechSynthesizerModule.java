@@ -179,12 +179,14 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                 String voice = args.hasKey("voice") ? args.getString("voice") : null;
                 Boolean forceStop = args.hasKey("forceStop") ?  args.getBoolean("forceStop") : null;
                 Float rate = args.hasKey("rate") ? (float)  args.getDouble("rate") : null;
+                int queueMethod = TextToSpeech.QUEUE_FLUSH;
+
                 if(tts.isSpeaking()){
                     //Force to stop and start new speech
                     if(forceStop != null && forceStop){
                         tts.stop();
                     } else {
-                        promise.reject("TTS is already speaking something , Please shutdown or stop  TTS and try again");
+                        queueMethod = TextToSpeech.QUEUE_ADD;
                     }
                 }
                 if(args.getString("text") == null || text == ""){
@@ -207,12 +209,12 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                         Bundle bundle = new Bundle();
                         bundle.putCharSequence(Engine.KEY_PARAM_UTTERANCE_ID, "");
                         ttsPromise = promise;
-                        speakResult = tts.speak(text, TextToSpeech.QUEUE_FLUSH, bundle, UUID.randomUUID().toString());
+                        speakResult = tts.speak(text, TextToSpeech.queueMethod, bundle, UUID.randomUUID().toString());
                     } else {
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put(Engine.KEY_PARAM_UTTERANCE_ID, UUID.randomUUID().toString());
                         ttsPromise = promise;
-                        speakResult = tts.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+                        speakResult = tts.speak(text, TextToSpeech.queueMethod, map);
                     }
 
                     if(speakResult < 0) {

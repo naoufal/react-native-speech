@@ -131,6 +131,10 @@ Speech.speak({
 });
 ```
 
+__Android feature__
+If you don't add forceStop = true argument to speak parameters your next speech will be queue. 
+
+
 ### pause()
 Pauses the speech instance.
 
