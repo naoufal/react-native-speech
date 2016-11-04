@@ -45,11 +45,22 @@ var Speech = require('react-native-speech');
 var YourComponent = React.createClass({
   _startHandler() {
     Speech.speak({
-      text: 'Aujourd\'hui, Maman est morte. Ou peut-être hier, je ne sais pas.',
+      text: 'Nous faisons le test 1',
       voice: 'fr-FR'
     })
     .then(started => {
-      console.log('Speech started');
+      console.log('Fin du test 1');
+      return Speech.speak({
+        text: 'Et voilà le test 2',
+        voice: 'fr-FR'
+      })
+    })
+    .then(started => {
+      console.log('Fin du test 2');
+      return Speech.speak({
+        text: 'Et maintenant le test 3',
+        voice: 'fr-FR'
+      })
     })
     .catch(error => {
       console.log('You\'ve already started a speech instance.');
