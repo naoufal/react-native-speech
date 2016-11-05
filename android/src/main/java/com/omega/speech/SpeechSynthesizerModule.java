@@ -83,7 +83,7 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                 getReactApplicationContext().getJSModule(RCTDeviceEventEmitter.class)
                     .emit("ErrorSpeechUtterance", map);
                 Promise promise = ttsPromises.get(utteranceId);
-                promise.resolve(utteranceId);
+                promise.reject(utteranceId);
             }
 
             @Override
