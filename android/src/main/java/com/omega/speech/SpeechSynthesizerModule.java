@@ -2,6 +2,7 @@ package com.omega.speech;
 
 import java.util.Locale;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import android.content.Context;
@@ -35,7 +36,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEm
 class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
     private Context context;
     private static TextToSpeech tts;
-    private Promise ttsPromise;
+    private Map<String, Promise> ttsPromises = new HashMap<String, Promise>();
 
     public SpeechSynthesizerModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -71,7 +72,8 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                 map.putString("utteranceId", utteranceId);
                 getReactApplicationContext().getJSModule(RCTDeviceEventEmitter.class)
                     .emit("FinishSpeechUtterance", map);
-                ttsPromise.resolve(true);
+                Promise promise = ttsPromises.get(utteranceId);
+                promise.resolve(utteranceId);
             }
 
             @Override
@@ -80,7 +82,8 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                 map.putString("utteranceId", utteranceId);
                 getReactApplicationContext().getJSModule(RCTDeviceEventEmitter.class)
                     .emit("ErrorSpeechUtterance", map);
-                ttsPromise.reject("error");
+                Promise promise = ttsPromises.get(utteranceId);
+                promise.resolve(utteranceId);
             }
 
             @Override
@@ -205,15 +208,16 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                     }
 
                     int speakResult = 0;
+                    String speechUUID = UUID.randomUUID().toString();
                     if(Build.VERSION.SDK_INT >= 21) {
                         Bundle bundle = new Bundle();
                         bundle.putCharSequence(Engine.KEY_PARAM_UTTERANCE_ID, "");
-                        ttsPromise = promise;
-                        speakResult = tts.speak(text, TextToSpeech.queueMethod, bundle, UUID.randomUUID().toString());
+                        ttsPromises.put(speechUUID, promise);
+                        speakResult = tts.speak(text, TextToSpeech.queueMethod, bundle, speechUUID);
                     } else {
                         HashMap<String, String> map = new HashMap<String, String>();
-                        map.put(Engine.KEY_PARAM_UTTERANCE_ID, UUID.randomUUID().toString());
-                        ttsPromise = promise;
+                        map.put(Engine.KEY_PARAM_UTTERANCE_ID, speechUUID);
+                        ttsPromises.put(speechUUID, promise);
                         speakResult = tts.speak(text, TextToSpeech.queueMethod, map);
                     }
 
