@@ -224,9 +224,6 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                     if(speakResult < 0) {
                         throw new Exception("Speak failed, make sure that TTS service is installed on you device");
                     }
-
-
-                    promise.resolve(true);
                 } catch (Exception e) {
                     promise.reject(e.getMessage());
                 }
