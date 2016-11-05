@@ -213,12 +213,12 @@ class SpeechSynthesizerModule extends ReactContextBaseJavaModule {
                         Bundle bundle = new Bundle();
                         bundle.putCharSequence(Engine.KEY_PARAM_UTTERANCE_ID, "");
                         ttsPromises.put(speechUUID, promise);
-                        speakResult = tts.speak(text, TextToSpeech.queueMethod, bundle, speechUUID);
+                        speakResult = tts.speak(text, queueMethod, bundle, speechUUID);
                     } else {
                         HashMap<String, String> map = new HashMap<String, String>();
                         map.put(Engine.KEY_PARAM_UTTERANCE_ID, speechUUID);
                         ttsPromises.put(speechUUID, promise);
-                        speakResult = tts.speak(text, TextToSpeech.queueMethod, map);
+                        speakResult = tts.speak(text, queueMethod, map);
                     }
 
                     if(speakResult < 0) {
