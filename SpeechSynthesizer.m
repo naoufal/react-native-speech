@@ -1,27 +1,34 @@
 #import "SpeechSynthesizer.h"
 #import "RCTUtils.h"
 #import "RCTLog.h"
+#import "RCTBridge.h"
+#import "SpeechEventEmitter.h"
 
 @implementation SpeechSynthesizer
+
+@synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE()
 
 // Speak
-RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
-{
+RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback) {
     // Error if self.synthesizer was already initialized
     if (self.synthesizer) {
-        return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
+        RCTLogInfo(@"There is a speech in progress. This means your speech request is added to a speech queue.");
     }
 
     // Set args to variables
     NSString *text = args[@"text"];
     NSString *voice = args[@"voice"];
     NSNumber *rate = args[@"rate"];
+    NSNumber *beforeInterval = args[@"beforeInterval"];
+    NSNumber *afterInterval = args[@"afterInterval"];
+    NSNumber *pitch = args[@"pitch"];
+    NSNumber *volume = args[@"volume"];
 
     // Error if no text is passed
     if (!text) {
-        RCTLogError(@"[Speech] You must specify a text to speak.");
+        RCTLogWarn(@"[Speech] You must specify a text to speak.");
         return;
     }
 
@@ -37,17 +44,21 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
         voiceLanguage = @"en-US";
     }
 
-    // Setup utterance and voice
+    // Setup utterance and voice if no instance exists
     AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
-
+    
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:voiceLanguage];
-
-    if (rate) {
-      utterance.rate = [rate doubleValue];
+    
+    if (rate) { utterance.rate = [rate doubleValue]; }
+    if (beforeInterval) { utterance.preUtteranceDelay = [beforeInterval doubleValue]; }
+    if (afterInterval) { utterance.postUtteranceDelay = [afterInterval doubleValue]; }
+    if (pitch) { utterance.pitchMultiplier = [pitch floatValue]; }
+    if (volume) { utterance.volume = [volume floatValue]; }
+    
+    if (!self.synthesizer) {
+        self.synthesizer = [[AVSpeechSynthesizer alloc] init];
+        self.synthesizer.delegate = self;
     }
-
-    self.synthesizer = [[AVSpeechSynthesizer alloc] init];
-    self.synthesizer.delegate = self;
 
     // Speak
     [self.synthesizer speakUtterance:utterance];
@@ -84,9 +95,9 @@ RCT_EXPORT_METHOD(continueSpeakingAtBoundary)
 RCT_EXPORT_METHOD(paused:(RCTResponseSenderBlock)callback)
 {
     if (self.synthesizer.paused) {
-        callback(@[@true]);
+      callback(@[[NSNull null], @true]);
     } else {
-        callback(@[@false]);
+      callback(@[[NSNull null], @false]);
     }
 }
 
@@ -94,9 +105,9 @@ RCT_EXPORT_METHOD(paused:(RCTResponseSenderBlock)callback)
 RCT_EXPORT_METHOD(speaking:(RCTResponseSenderBlock)callback)
 {
     if (self.synthesizer.speaking) {
-        callback(@[@true]);
+      callback(@[[NSNull null], @true]);
     } else {
-        callback(@[@false]);
+      callback(@[[NSNull null], @false]);
     }
 }
 
@@ -114,8 +125,10 @@ RCT_EXPORT_METHOD(speechVoices:(RCTResponseSenderBlock)callback)
 // Finished Handler
 -(void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
-    NSLog(@"Speech finished");
+    NSString *finishString = utterance.speechString;
+    NSLog(@"Speech finished with - %@", finishString);
     self.synthesizer = nil;
+    [SpeechEventEmitter application:[UIApplication sharedApplication] speechFinished:finishString];
 }
 
 // Started Handler
