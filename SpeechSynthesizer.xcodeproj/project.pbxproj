@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		13BE3DEE1AC21097009241FE /* SpeechSynthesizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BE3DED1AC21097009241FE /* SpeechSynthesizer.m */; };
+		216E87F51DD725770055AA4D /* SpeechEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 216E87F31DD725770055AA4D /* SpeechEventEmitter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +27,8 @@
 		134814201AA4EA6300B7C361 /* libSpeechSynthesizer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSpeechSynthesizer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		13BE3DEC1AC21097009241FE /* SpeechSynthesizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeechSynthesizer.h; sourceTree = "<group>"; };
 		13BE3DED1AC21097009241FE /* SpeechSynthesizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeechSynthesizer.m; sourceTree = "<group>"; };
+		216E87F31DD725770055AA4D /* SpeechEventEmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpeechEventEmitter.m; sourceTree = "<group>"; };
+		216E87F41DD725770055AA4D /* SpeechEventEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpeechEventEmitter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,9 +50,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		216E87F21DD7255C0055AA4D /* EventEmitters */ = {
+			isa = PBXGroup;
+			children = (
+				216E87F31DD725770055AA4D /* SpeechEventEmitter.m */,
+				216E87F41DD725770055AA4D /* SpeechEventEmitter.h */,
+			);
+			name = EventEmitters;
+			sourceTree = "<group>";
+		};
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				216E87F21DD7255C0055AA4D /* EventEmitters */,
 				13BE3DEC1AC21097009241FE /* SpeechSynthesizer.h */,
 				13BE3DED1AC21097009241FE /* SpeechSynthesizer.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -113,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13BE3DEE1AC21097009241FE /* SpeechSynthesizer.m in Sources */,
+				216E87F51DD725770055AA4D /* SpeechEventEmitter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

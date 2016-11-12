@@ -1,8 +1,12 @@
 #import "SpeechSynthesizer.h"
 #import "RCTUtils.h"
 #import "RCTLog.h"
+#import "RCTBridge.h"
+#import "SpeechEventEmitter.h"
 
 @implementation SpeechSynthesizer
+
+@synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE()
 
@@ -121,8 +125,10 @@ RCT_EXPORT_METHOD(speechVoices:(RCTResponseSenderBlock)callback)
 // Finished Handler
 -(void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance
 {
-    NSLog(@"Speech finished");
+    NSString *finishString = utterance.speechString;
+    NSLog(@"Speech finished with - %@", finishString);
     self.synthesizer = nil;
+    [SpeechEventEmitter application:[UIApplication sharedApplication] speechFinished:finishString];
 }
 
 // Started Handler
