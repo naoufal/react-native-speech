@@ -7,21 +7,24 @@
 RCT_EXPORT_MODULE()
 
 // Speak
-RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
-{
+RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback) {
     // Error if self.synthesizer was already initialized
     if (self.synthesizer) {
-      RCTLogError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.");
+        RCTLogInfo(@"There is a speech in progress. This means your speech request is added to a speech queue.");
     }
 
     // Set args to variables
     NSString *text = args[@"text"];
     NSString *voice = args[@"voice"];
     NSNumber *rate = args[@"rate"];
+    NSNumber *beforeInterval = args[@"beforeInterval"];
+    NSNumber *afterInterval = args[@"afterInterval"];
+    NSNumber *pitch = args[@"pitch"];
+    NSNumber *volume = args[@"volume"];
 
     // Error if no text is passed
     if (!text) {
-        RCTLogError(@"[Speech] You must specify a text to speak.");
+        RCTLogWarn(@"[Speech] You must specify a text to speak.");
         return;
     }
 
@@ -42,12 +45,13 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
     
     utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:voiceLanguage];
     
-    if (rate) {
-        utterance.rate = [rate doubleValue];
-    }
+    if (rate) { utterance.rate = [rate doubleValue]; }
+    if (beforeInterval) { utterance.preUtteranceDelay = [beforeInterval doubleValue]; }
+    if (afterInterval) { utterance.postUtteranceDelay = [afterInterval doubleValue]; }
+    if (pitch) { utterance.pitchMultiplier = [pitch floatValue]; }
+    if (volume) { utterance.volume = [volume floatValue]; }
     
     if (!self.synthesizer) {
-        
         self.synthesizer = [[AVSpeechSynthesizer alloc] init];
         self.synthesizer.delegate = self;
     }
