@@ -13,13 +13,24 @@ var NativeSpeechSynthesizer = NativeModules.SpeechSynthesizer;
  */
 
 var SpeechSynthesizer = {
-  speak(options) {
-    return new Promise(function(resolve, reject) {
-      NativeSpeechSynthesizer.speakUtterance(options, function(error, success) {
+  speak(options: { [string]: string | number }) {
+    return new Promise(function (resolve, reject) {
+      NativeSpeechSynthesizer.speakUtterance(options, function (error, success) {
         if (error) {
           return reject(error);
         }
 
+        resolve(true);
+      });
+    });
+  },
+
+  speakWithFinish(options: { [string]: string | number }) {
+    return new Promise(function (resolve, reject) {
+      NativeSpeechSynthesizer.speakUtteranceWithFinish(options, function (error, success) {
+        if (error) {
+          return reject(error);
+        }
         resolve(true);
       });
     });
@@ -32,8 +43,8 @@ var SpeechSynthesizer = {
   resume: NativeSpeechSynthesizer.continueSpeakingAtBoundary,
 
   isPaused() {
-    return new Promise(function(resolve, reject) {
-      NativeSpeechSynthesizer.paused(function(error, paused) {
+    return new Promise(function (resolve, reject) {
+      NativeSpeechSynthesizer.paused(function (error, paused) {
         if (error) {
           return reject(error);
         }
@@ -48,8 +59,8 @@ var SpeechSynthesizer = {
   },
 
   isSpeaking() {
-    return new Promise(function(resolve, reject) {
-      NativeSpeechSynthesizer.speaking(function(error, speaking) {
+    return new Promise(function (resolve, reject) {
+      NativeSpeechSynthesizer.speaking(function (error, speaking) {
         if (error) {
           return reject(error);
         }
@@ -64,8 +75,8 @@ var SpeechSynthesizer = {
   },
 
   supportedVoices() {
-    return new Promise(function(resolve, reject) {
-      NativeSpeechSynthesizer.speechVoices(function(error, locales) {
+    return new Promise(function (resolve, reject) {
+      NativeSpeechSynthesizer.speechVoices(function (error, locales) {
         if (error) {
           return reject(error);
         }
