@@ -56,6 +56,56 @@ RCT_EXPORT_METHOD(speakUtterance:(NSDictionary *)args callback:(RCTResponseSende
     callback(@[[NSNull null], @true]);
 }
 
+// SpeakWithFinish
+RCT_EXPORT_METHOD(speakUtteranceWithFinish:(NSDictionary *)args callback:(RCTResponseSenderBlock)callback)
+{
+    // Error if self.synthesizer was already initialized
+    if (self.synthesizer || self.cb) {
+        return callback(@[RCTMakeError(@"There is a speech in progress.  Use the `paused` method to know if it's paused.", nil, nil)]);
+    }
+    
+    self.cb = callback;
+    
+    // Set args to variables
+    NSString *text = args[@"text"];
+    NSString *voice = args[@"voice"];
+    NSNumber *rate = args[@"rate"];
+    
+    // Error if no text is passed
+    if (!text) {
+        RCTLogError(@"[Speech] You must specify a text to speak.");
+        return;
+    }
+    
+    // Set default voice
+    NSString *voiceLanguage;
+    
+    // Set voice if provided
+    if (voice) {
+        voiceLanguage = voice;
+        
+        // Fallback to en-US
+    } else {
+        voiceLanguage = @"en-US";
+    }
+    
+    // Setup utterance and voice
+    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:text];
+    
+    utterance.voice = [AVSpeechSynthesisVoice voiceWithLanguage:voiceLanguage];
+    
+    if (rate) {
+        utterance.rate = [rate doubleValue];
+    }
+    
+    self.synthesizer = [[AVSpeechSynthesizer alloc] init];
+    self.synthesizer.delegate = self;
+    
+    // Speak
+    [self.synthesizer speakUtterance:utterance];
+}
+
+
 // Stops synthesizer
 RCT_EXPORT_METHOD(stopSpeakingAtBoundary)
 {
@@ -116,6 +166,12 @@ RCT_EXPORT_METHOD(speechVoices:(RCTResponseSenderBlock)callback)
 {
     NSLog(@"Speech finished");
     self.synthesizer = nil;
+    
+    if (self.cb) {
+        // Return that the speach has started
+        self.cb(@[[NSNull null], @true]);
+        self.cb = nil;
+    }
 }
 
 // Started Handler
